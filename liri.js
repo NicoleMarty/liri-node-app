@@ -3,9 +3,8 @@ require("dotenv").config();
 //VARIABLES FOR ALL COMMANDS
 var axios = require("axios");
 
-
 //BANDS IN TOWN -------- node liri.js concert-this <artist/band name here>
-var concertThis = function(query) {
+var concertThis = function() {
     // allows multiple word query
     var query = process.argv.slice(3).join("");
     // defines artist in Bands in Town API
@@ -13,29 +12,30 @@ var concertThis = function(query) {
     console.log(api);
     // axios processes the the query and returns...
     axios.get(api).then(
-            function(response) {
-                console.log(response.data); // VENUE IS UNDEFINED in response.data.venue.name
-                //console.log("Venue Location: " + (response)[index].venue.city);
-
-            })
-        //what to do if error
-        .catch(function(error) {
-            if (error.response) {
-                console.log("--------------Data--------------");
-                console.log(error.response.data);
-                console.log("--------------Status--------------");
-                console.log(error.response.status);
-                console.log("--------------Headers--------------");
-                console.log(error.response.headers);
-            } else if (error.request) {
-                console.log(error.request);
-            } else {
-                console.log("Error", error.message);
-            }
-            console.log(error.config);
+        function(response) {
+            console.log(response.data); // VENUE IS UNDEFINED in response.data.venue.name
+            //console.log("Venue Location: " + (response)[index].venue.city);
+            data = response.data;
+            console.log(data[{ venue }]);
         })
-}
 
+    //what to do if error
+    .catch(function(error) {
+        if (error.response) {
+            console.log("--------------Data--------------");
+            console.log(error.response.data);
+            console.log("--------------Status--------------");
+            console.log(error.response.status);
+            console.log("--------------Headers--------------");
+            console.log(error.response.headers);
+        } else if (error.request) {
+            console.log(error.request);
+        } else {
+            console.log("Error", error.message);
+        }
+        console.log(error.config);
+    })
+}
 
 //OMDB ----- node liri.js movie-this '<movie name here>'
 //Identifies command ("movie-this", "concert-this", or "spotify-this-song") as index 2 after liri.js
@@ -95,5 +95,5 @@ if (command === "movie-this") {
     movieThis(query);
 }
 if (command === "concert-this") {
-    concertThis(query);
+    concertThis();
 }

@@ -1,6 +1,6 @@
 //require("dotenv").config();
 
-//node liri.js concert-this <artist/band name here>
+
 
 //node liri.js spotify-this-song '<song name here>'
 //var keys = require("./keys.js");
@@ -12,6 +12,25 @@ var axios = require("axios");
 var command = process.argv[2];
 //Identifies query ("<movie name here>", <artist/band name here>, or "<song name here>") as index 3 after command
 var query = process.argv[3];
+
+//BANDS IN TOWN -------- node liri.js concert-this <artist/band name here>
+var concertThis = function(artist) {
+    if (artist === undefined) {
+        artist = "Ace of Base";
+    }
+    var query = process.argv;
+    // allows multiple word query
+    for (var i = 3; i < query.length; i++) {
+        if (i > 3 && i < query.length) {
+            artist = artist + "+" + query[i];
+        } else {
+            artist += query[i];
+        }
+    }
+    var api = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
+    console.log(api);
+}
+
 
 
 //OMDB ----- node liri.js movie-this '<movie name here>'
@@ -67,4 +86,7 @@ var movieThis = function(movieName) {
 // DO THE THING -------- node liri.js do-what-it-says
 if (command === "movie-this") {
     movieThis(query);
+}
+if (command === "concert-this") {
+    concertThis(query);
 }

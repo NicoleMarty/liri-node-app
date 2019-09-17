@@ -87,8 +87,35 @@ var movieThis = function(movieName) {
 }
 
 //node liri.js spotify-this-song '<song name here>'
-//var keys = require("./keys.js");
-//var spotify = new spotify(keys.spotify);
+var spotifythisSong = function(trackQuery) {
+    var spotify = require('node-spotify-api');
+    var keys = require("./keys.js");
+    var spotify = new spotify(keys.spotify);
+
+    // if no trackQuery then ace of base for you
+    if (trackQuery === undefined) {
+        trackQuery = "the sign ace of base";
+    }
+
+    // Spotify API request
+    spotify.search({ type: 'track', query: trackQuery }, function(error, data) {
+        if (error) { // if error
+            console.log('You messed up: ' + error);
+        } else { // if no error
+            // if track has multiple artists
+            for (var i = 0; i < data.tracks.items[0].artists.length; i++) {
+                if (i === 0) {
+                    console.log("Artist(s): " + data.tracks.items[0].artists[i].name);
+                } else {
+                    console.log("" + data.tracks.items[0].artists[i].name);
+                }
+            }
+            console.log("Song: " + data.tracks.items[0].name);
+            console.log("Preview Link: " + data.tracks.items[0].preview_url);
+            console.log("Album: " + data.tracks.items[0].album.name);
+        }
+    });
+}
 
 // DO THE THING -------- node liri.js do-what-it-says
 if (command === "movie-this") {
@@ -96,4 +123,7 @@ if (command === "movie-this") {
 }
 if (command === "concert-this") {
     concertThis();
+}
+if (command === "spotify-this-song") {
+    spotifythisSong(query);
 }

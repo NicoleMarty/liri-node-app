@@ -6,19 +6,23 @@
 //var keys = require("./keys.js");
 //var spotify = new spotify(keys.spotify);
 
-//node liri.js movie-this '<movie name here>'
+//VARIABLES FOR ALL COMMANDS
 var axios = require("axios");
-var commandLine = process.argv[2];
+//Identifies command ("movie-this", "concert-this", or "spotify-this-song") as index 2 after liri.js
+var command = process.argv[2];
+//Identifies query ("<movie name here>", <artist/band name here>, or "<song name here>") as index 3 after command
 var query = process.argv[3];
 
+
+//OMDB ----- node liri.js movie-this '<movie name here>'
+// creates movieThis function taking in the movie name from query
 var movieThis = function(movieName) {
+    // sets Mr. Nobody as default query
     if (movieName === undefined) {
         movieName = "Mr. Nobody";
     }
-
-
     var query = process.argv;
-
+    // allows multiple word query
     for (var i = 3; i < query.length; i++) {
         if (i > 3 && i < query.length) {
             movieName = movieName + "+" + query[i];
@@ -27,9 +31,11 @@ var movieThis = function(movieName) {
         }
     }
 
+    // defines the query in reference to the OMBD API
     var queryURL = "http://www.omdbapi.com/?t=" + movieName + "&apikey=trilogy";
     console.log(queryURL);
 
+    // axios processes the the query and returns...
     axios.get(queryURL).then(
             function(response) {
                 console.log("Movie Title: " + response.data.Title);
@@ -40,6 +46,7 @@ var movieThis = function(movieName) {
                 console.log("Plot: " + response.data.Plot);
                 console.log("Actors/Actresses: " + response.data.Actors);
             })
+        // what to do if error
         .catch(function(error) {
             if (error.response) {
                 console.log("--------------Data--------------");
@@ -57,7 +64,7 @@ var movieThis = function(movieName) {
         })
 }
 
-//node liri.js do-what-it-says
-if (commandLine === "movie-this") {
+// DO THE THING -------- node liri.js do-what-it-says
+if (command === "movie-this") {
     movieThis(query);
 }

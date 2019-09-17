@@ -15,10 +15,7 @@ var query = process.argv[3];
 
 //BANDS IN TOWN -------- node liri.js concert-this <artist/band name here>
 var concertThis = function(artist) {
-    if (artist === undefined) {
-        artist = "Ace of Base";
-    }
-    var query = process.argv;
+    var query = artist;
     // allows multiple word query
     for (var i = 3; i < query.length; i++) {
         if (i > 3 && i < query.length) {
@@ -29,6 +26,30 @@ var concertThis = function(artist) {
     }
     var api = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
     console.log(api);
+
+    // axios processes the the query and returns...
+    axios.get(api).then(
+            function(response) {
+                console.log("Name of Venue: " + response.data.venue.name);
+                //console.log("Venue Location: " + (response)[index].venue.city);
+
+            })
+        //what to do if error
+        .catch(function(error) {
+            if (error.response) {
+                console.log("--------------Data--------------");
+                console.log(error.response.data);
+                console.log("--------------Status--------------");
+                console.log(error.response.status);
+                console.log("--------------Headers--------------");
+                console.log(error.response.headers);
+            } else if (error.request) {
+                console.log(error.request);
+            } else {
+                console.log("Error", error.message);
+            }
+            console.log(error.config);
+        })
 }
 
 

@@ -1,28 +1,16 @@
-//require("dotenv").config();
-
-
-
-//node liri.js spotify-this-song '<song name here>'
-//var keys = require("./keys.js");
-//var spotify = new spotify(keys.spotify);
+require("dotenv").config();
 
 //VARIABLES FOR ALL COMMANDS
 var axios = require("axios");
 
-//BANDS IN TOWN -------- node liri.js concert-this <artist/band name here>
-var concertThis = function(artist) {
-    var query = artist;
-    // allows multiple word query
-    for (var i = 3; i < query.length; i++) {
-        if (i > 3 && i < query.length) {
-            artist = artist + "+" + query[i];
-        } else {
-            artist += query[i];
-        }
-    }
-    var api = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
-    console.log(api);
 
+//BANDS IN TOWN -------- node liri.js concert-this <artist/band name here>
+var concertThis = function(query) {
+    // allows multiple word query
+    var query = process.argv.slice(3).join("");
+    // defines artist in Bands in Town API
+    var api = "https://rest.bandsintown.com/artists/" + query + "/events?app_id=codingbootcamp";
+    console.log(api);
     // axios processes the the query and returns...
     axios.get(api).then(
             function(response) {
@@ -47,7 +35,6 @@ var concertThis = function(artist) {
             console.log(error.config);
         })
 }
-
 
 
 //OMDB ----- node liri.js movie-this '<movie name here>'
@@ -98,6 +85,10 @@ var movieThis = function(movieName) {
             console.log(error.config);
         })
 }
+
+//node liri.js spotify-this-song '<song name here>'
+//var keys = require("./keys.js");
+//var spotify = new spotify(keys.spotify);
 
 // DO THE THING -------- node liri.js do-what-it-says
 if (command === "movie-this") {

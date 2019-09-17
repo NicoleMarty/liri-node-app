@@ -8,10 +8,6 @@
 
 //VARIABLES FOR ALL COMMANDS
 var axios = require("axios");
-//Identifies command ("movie-this", "concert-this", or "spotify-this-song") as index 2 after liri.js
-var command = process.argv[2];
-//Identifies query ("<movie name here>", <artist/band name here>, or "<song name here>") as index 3 after command
-var query = process.argv[3];
 
 //BANDS IN TOWN -------- node liri.js concert-this <artist/band name here>
 var concertThis = function(artist) {
@@ -55,24 +51,23 @@ var concertThis = function(artist) {
 
 
 //OMDB ----- node liri.js movie-this '<movie name here>'
+//Identifies command ("movie-this", "concert-this", or "spotify-this-song") as index 2 after liri.js
+var command = process.argv[2];
+//Identifies query ("<movie name here>", <artist/band name here>, or "<song name here>") as index 3 after command
+var query = process.argv[3];
 // creates movieThis function taking in the movie name from query
 var movieThis = function(movieName) {
     // sets Mr. Nobody as default query
     if (movieName === undefined) {
         movieName = "Mr. Nobody";
     }
-    var query = process.argv;
-    // allows multiple word query
-    for (var i = 3; i < query.length; i++) {
-        if (i > 3 && i < query.length) {
-            movieName = movieName + "+" + query[i];
-        } else {
-            movieName += query[i];
-        }
-    }
+
+    // allows multiple word query slicing at index 3 (index 2 would still include movie-this)
+    var query = process.argv.slice(3).join("");
+
 
     // defines the query in reference to the OMBD API
-    var queryURL = "http://www.omdbapi.com/?t=" + movieName + "&apikey=trilogy";
+    var queryURL = "http://www.omdbapi.com/?t=" + query + "&apikey=trilogy";
     console.log(queryURL);
 
     // axios processes the the query and returns...

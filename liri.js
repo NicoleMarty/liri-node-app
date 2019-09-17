@@ -14,7 +14,7 @@ var concertThis = function(query) {
     // axios processes the the query and returns...
     axios.get(api).then(
             function(response) {
-                console.log("Name of Venue: " + response.data.venue.name);
+                console.log(response.data); // VENUE IS UNDEFINED in response.data.venue.name
                 //console.log("Venue Location: " + (response)[index].venue.city);
 
             })
